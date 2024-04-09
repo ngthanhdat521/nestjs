@@ -1,36 +1,15 @@
-import { GlobalExceptionFilter } from '@filters/global-exception-filters.filter';
-import {
-	Body,
-	Controller,
-	Get,
-	Post,
-	UseFilters,
-	UseGuards,
-	UsePipes,
-	ValidationPipe
-} from '@nestjs/common';
-import {
-	ApiBearerAuth,
-	ApiBody,
-	ApiOkResponse,
-	ApiOperation,
-	ApiQuery,
-	ApiTags
-} from '@nestjs/swagger';
-import { ProductService } from '@product-module/product.service';
-import { ProductEntity } from '@product-module/product.entity';
-import { AuthGuard } from '@guards/auth-guard.guard';
+import { Body } from '@nestjs/common';
+import { ApiBody, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import { ProductService } from '@modules/product/product.service';
+import { ProductEntity } from '@modules/product/product.entity';
 import { Paginate, Paginated } from 'nestjs-paginate';
-import { PaginateQuery } from '@common-dtos/paginate-query.dto';
+import { PaginateQuery } from '@common/dtos/paginate-query.dto';
 import { InsertResult } from 'typeorm';
 import { ProductsDto } from './dtos/products.dto';
-import { Roles } from '@decorators/roles.decorater';
+import { Roles } from '@common/decorators/roles.decorator';
+import { Controller, Get, Post } from '@common/decorators/http.decorator';
 
 @Controller('product')
-@ApiTags('product')
-@UseGuards(AuthGuard)
-@UseFilters(GlobalExceptionFilter)
-@UsePipes(new ValidationPipe({ transform: true }))
 export class ProductController {
 	constructor(private productService: ProductService) {}
 
@@ -38,16 +17,13 @@ export class ProductController {
 	@ApiOkResponse({
 		type: ProductEntity
 	})
-	@ApiQuery({ type: PaginateQuery })
-	@ApiBearerAuth()
 	@ApiOperation({ summary: 'Get list of products' })
 	@Roles(['admin', 'user'])
 	get(@Paginate() query: PaginateQuery): Promise<Paginated<ProductEntity>> {
-		return this.productService.get(query);
+		return this.productService.getProducts(query);
 	}
 
 	@Post()
-	@ApiBearerAuth()
 	@ApiOperation({ summary: 'Create list of products' })
 	@ApiBody({
 		type: ProductsDto,

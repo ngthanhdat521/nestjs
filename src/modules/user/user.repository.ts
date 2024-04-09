@@ -1,13 +1,10 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { DataSource, InsertResult } from 'typeorm';
-import { UserEntity } from '@user-module/user.entity';
-import { Brypt } from '@models/brypt.model';
-import { Repository } from '@models/repository.model';
-import { PublicUserData } from '@app/common/dtos/public-user-data.dto';
-import {
-	NOT_EXIST_ACCOUNT_ERROR,
-	NOT_EXIST_ACCOUNT_MESSAGE
-} from '@app/common/constants/exception.constant';
+import { UserEntity } from '@modules/user/user.entity';
+import { Brypt } from '@common/models/brypt.model';
+import { Repository } from '@common/models/repository.model';
+import { PublicUserData } from '@common/dtos/public-user-data.dto';
+import { AuthError } from '@app/common/enums/error.enum';
 
 @Injectable()
 export class UsersRepository extends Repository<UserEntity> {
@@ -36,11 +33,9 @@ export class UsersRepository extends Repository<UserEntity> {
 			if (isUserCorrect) {
 				return user;
 			}
-
-			throw new UnauthorizedException(NOT_EXIST_ACCOUNT_MESSAGE, NOT_EXIST_ACCOUNT_ERROR);
 		}
 
-		throw new UnauthorizedException(NOT_EXIST_ACCOUNT_MESSAGE, NOT_EXIST_ACCOUNT_ERROR);
+		throw new UnauthorizedException(AuthError.TITLE, AuthError.INVALID_USER);
 	}
 
 	async insertNewUser(user: UserEntity): Promise<InsertResult> {

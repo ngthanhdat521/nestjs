@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CartRepository } from './cart.repository';
-import { Request } from '@models/request.model';
-import { CartEntity } from './cart.entity';
-import { WaitingOrderDto } from './dtos/waiting-order.dto';
-import { ProductCartService } from '../product-cart/product-cart.service';
-import { UserEntity } from '@user-module/user.entity';
+import { Request } from '@common/models/express.model';
+import { CartEntity } from '@modules/cart/cart.entity';
+import { WaitingOrderDto } from '@modules/cart/dtos/waiting-order.dto';
+import { ProductCartService } from '@modules/product-cart/product-cart.service';
+import { UserEntity } from '@modules/user/user.entity';
+import { CartRepository } from '@modules/cart/cart.repository';
 
 @Injectable()
 export class CartService {
@@ -14,7 +14,7 @@ export class CartService {
 	) {}
 
 	public async insertCartForNewUser(request: Request, orders: WaitingOrderDto[]) {
-		const userId = request.session.user.id;
+		const userId = request.decodedInfo.user.id;
 
 		let myCart = await this.cartRepository.selectOne({
 			where: {
@@ -37,7 +37,7 @@ export class CartService {
 	}
 
 	public getMyCart(request: Request) {
-		const { id } = request.session.user;
+		const { id } = request.decodedInfo.user;
 
 		return this.cartRepository.getByUserId(id);
 	}

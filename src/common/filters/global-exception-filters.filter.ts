@@ -1,4 +1,4 @@
-import { GlobalHttpException } from '@exceptions/global-http-exception.exception';
+import { GlobalHttpException } from '@common/exceptions/global-http.exception';
 import {
 	Injectable,
 	ExceptionFilter,
@@ -7,7 +7,7 @@ import {
 	InternalServerErrorException
 } from '@nestjs/common';
 import { Catch } from '@nestjs/common'; // Import the Catch decorator
-import { Response } from 'express';
+import { Response } from '@common/models/express.model';
 
 @Catch() // Catch all exceptions by default
 @Injectable()
@@ -19,7 +19,6 @@ export class GlobalExceptionFilter implements ExceptionFilter {
 		try {
 			response.status(exception.getStatus()).json(new GlobalHttpException(exception));
 		} catch {
-			console.log('Undefined Exception', exception);
 			const error = new InternalServerErrorException('Internal Error Server', {
 				cause: exception,
 				description: 'Undefined Exception !'

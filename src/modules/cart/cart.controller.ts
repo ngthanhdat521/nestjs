@@ -1,38 +1,17 @@
-import { InsertResultDto } from '@common-dtos/insert-result.dto';
-import {
-	Body,
-	Controller,
-	Get,
-	Post,
-	Req,
-	UseFilters,
-	UseGuards,
-	UsePipes,
-	ValidationPipe
-} from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { CartDto } from './dtos/carts.dto';
-import { CartService } from './cart.service';
-import { AuthGuard } from '@guards/auth-guard.guard';
-import { GlobalExceptionFilter } from '@filters/global-exception-filters.filter';
-import { Request } from '@models/request.model';
-import { Roles } from '@decorators/roles.decorater';
-import { applyDecorators } from '@nestjs/common';
-
-export function Auth(role: string) {
-	return applyDecorators(ApiBearerAuth(), () => console.log('applyDecorators', role));
-}
+import { InsertResultDto } from '@common/dtos/insert-result.dto';
+import { Body, Req } from '@nestjs/common';
+import { ApiBody, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import { CartDto } from '@modules/cart/dtos/carts.dto';
+import { CartService } from '@modules/cart/cart.service';
+import { Request } from '@app/common/models/express.model';
+import { Roles } from '@common/decorators/roles.decorator';
+import { Controller, Get, Post } from '@common/decorators/http.decorator';
 
 @Controller('cart')
-@ApiTags('cart')
-@UseGuards(AuthGuard)
-@UseFilters(GlobalExceptionFilter)
-@UsePipes(new ValidationPipe({ transform: true }))
 export class CartController {
 	constructor(private readonly cartService: CartService) {}
 
 	@Post()
-	@ApiBearerAuth()
 	@ApiOperation({ summary: 'Create a new product into the cart of user' })
 	@ApiBody({
 		type: CartDto
@@ -46,7 +25,6 @@ export class CartController {
 	}
 
 	@Get()
-	@ApiBearerAuth()
 	@ApiOperation({ summary: 'Get list of product in cart of user' })
 	@ApiOkResponse({
 		type: InsertResultDto

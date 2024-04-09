@@ -1,17 +1,17 @@
 {
-  "moduleFileExtensions": ["js", "json", "ts"],
-  "rootDir": ".",
-  "testEnvironment": "node",
-  "testRegex": ".e2e-spec.ts$",
-  "transform": {
-    "^.+\\.(t|j)s$": "ts-jest"
-  },
-  "moduleNameMapper": {
-    "packageJson": "<rootDir>../package.json",
-    "src/(.*)": "<rootDir>../src/$1",
-    "@app/(.*)": "<rootDir>../src/$1",
-    "@common": "<rootDir>../src/common",
-    "@modules/(.*)": "<rootDir>../src/modules/$1",
-    "@apis/(.*)": "<rootDir>../src/apis/$1"
-  }
+	"moduleFileExtensions": ["js", "json", "ts"],
+	"rootDir": ".",
+	"testEnvironment": "node",
+	"testRegex": ".e2e-spec.ts$",
+	"transform": {
+		"^.+\\.(t|j)s$": "ts-jest"
+	},
+	"moduleNameMapper": {
+		"packageJson": "<rootDir>../package.json",
+		"src/(.*)": "<rootDir>../src/$1",
+		"@app/(.*)": "<rootDir>../src/$1",
+		"@common": "<rootDir>../src/common",
+		"@modules/(.*)": "<rootDir>../src/modules/$1",
+		"@apis/(.*)": "<rootDir>../src/apis/$1"
+	}
 }

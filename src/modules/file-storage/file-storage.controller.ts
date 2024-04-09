@@ -1,27 +1,14 @@
-import { Roles } from '@app/common/decorators/roles.decorater';
-import { GlobalExceptionFilter } from '@app/common/filters/global-exception-filters.filter';
-import { AuthGuard } from '@app/common/guards/auth-guard.guard';
 import {
-	Controller,
 	ForbiddenException,
 	Injectable,
 	PipeTransform,
-	Post,
-	UseFilters,
-	UseGuards,
 	UseInterceptors,
 	UsePipes
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import {
-	ApiBearerAuth,
-	ApiBody,
-	ApiConsumes,
-	ApiOkResponse,
-	ApiOperation,
-	ApiProperty,
-	ApiTags
-} from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiOperation, ApiProperty } from '@nestjs/swagger';
+import { Roles } from '@common/decorators/roles.decorator';
+import { Controller, Post } from '@common/decorators/http.decorator';
 
 @Injectable()
 export class ImageValidationPipe implements PipeTransform {
@@ -39,22 +26,15 @@ export class UploadFileDto {
 }
 
 @Controller('file-storage')
-@ApiTags('file-storage')
-@UseGuards(AuthGuard)
-@UseFilters(GlobalExceptionFilter)
 export class FileStorageController {
 	constructor() {}
 	@Post()
-	@ApiBearerAuth()
 	@ApiConsumes('multipart/form-data')
 	@ApiOperation({ summary: 'Create a new file' })
 	@ApiBody({
 		type: UploadFileDto,
 		required: true
 	})
-	// @ApiOkResponse({
-	// 	type: string
-	// })
 	@Roles(['admin'])
 	@UsePipes(ImageValidationPipe)
 	@UseInterceptors(

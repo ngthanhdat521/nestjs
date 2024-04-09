@@ -16,5 +16,14 @@
 	"requirePragma": false,
 	"tabWidth": 4,
 	"useTabs": true,
-	"embeddedLanguageFormatting": "auto"
+	"plugins": ["@trivago/prettier-plugin-sort-imports"],
+	"embeddedLanguageFormatting": "auto",
+	"importOrder": [
+		"^@/(.*)$",
+		"^[^.]+$",
+		"^.[^/]+$",
+		"^.[^.]+$"
+	],
+  	"importOrderSeparation": true,
+  	"importOrderSortSpecifiers": true
 }

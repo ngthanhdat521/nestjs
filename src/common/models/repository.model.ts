@@ -1,4 +1,4 @@
-import { SQLException } from '@exceptions/sql-exception.exception';
+import { PostgresException } from '@app/common/exceptions/postgres.exception';
 import { Injectable } from '@nestjs/common';
 import {
 	FindManyOptions,
@@ -17,7 +17,7 @@ export class Repository<Entity extends ObjectLiteral> extends TypeOrmRepository<
 
 			return results;
 		} catch (error) {
-			throw new SQLException({
+			throw new PostgresException({
 				cause: error,
 				description: error?.['detail'] || 'Fail to insert a new user!'
 			});
@@ -30,7 +30,7 @@ export class Repository<Entity extends ObjectLiteral> extends TypeOrmRepository<
 
 			return result;
 		} catch (error) {
-			throw new SQLException({
+			throw new PostgresException({
 				cause: error,
 				description: error?.['detail'] || 'Fail to insert a new user!'
 			});
@@ -43,8 +43,7 @@ export class Repository<Entity extends ObjectLiteral> extends TypeOrmRepository<
 
 			return result;
 		} catch (error) {
-			console.log(error);
-			throw new SQLException({
+			throw new PostgresException({
 				cause: error,
 				description: error?.['detail'] || 'Fail to insert a new user!'
 			});
@@ -57,8 +56,7 @@ export class Repository<Entity extends ObjectLiteral> extends TypeOrmRepository<
 
 			return result;
 		} catch (error) {
-			console.log('error', error);
-			throw new SQLException({
+			throw new PostgresException({
 				cause: error,
 				description: error?.['detail'] || 'Fail to query select !'
 			});
@@ -71,7 +69,7 @@ export class Repository<Entity extends ObjectLiteral> extends TypeOrmRepository<
 
 			return results;
 		} catch (error) {
-			throw new SQLException({
+			throw new PostgresException({
 				cause: error,
 				description: error?.['detail'] || 'Fail to query select !'
 			});

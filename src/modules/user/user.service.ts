@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { UserEntity } from './user.entity';
-import { UsersRepository } from '@user-module/user.repository';
-import { RegisterDto } from '@user-module/dtos/register-dto.dto';
-import { InsertResultDto } from '@common-dtos/insert-result.dto';
+import { UserEntity } from '@modules/user/user.entity';
+import { UsersRepository } from '@modules/user/user.repository';
+import { RegisterDto } from '@modules/user/dtos/register-dto.dto';
+import { InsertResultDto } from '@common/dtos/insert-result.dto';
 import { PublicUserData } from '@app/common/dtos/public-user-data.dto';
 
 @Injectable()

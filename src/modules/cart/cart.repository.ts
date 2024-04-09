@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { CartEntity } from './cart.entity';
 import { Repository } from '@models/repository.model';
-import { SQLException } from '@exceptions/sql-exception.exception';
+import { PostgresException } from '@app/common/exceptions/postgres.exception';
 
 @Injectable()
 export class CartRepository extends Repository<CartEntity> {
@@ -23,7 +23,7 @@ export class CartRepository extends Repository<CartEntity> {
 
 			return results;
 		} catch (error) {
-			throw new SQLException({
+			throw new PostgresException({
 				cause: error,
 				description: error?.['detail'] || 'Fail to insert a new user!'
 			});

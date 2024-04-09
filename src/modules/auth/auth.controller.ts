@@ -1,16 +1,14 @@
-import { GlobalExceptionFilter } from '@filters/global-exception-filters.filter';
-import { Body, Controller, Post, UseFilters, UsePipes, ValidationPipe } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { AuthService } from '@auth-module/auth.service';
-import { LoginDto } from '@auth-module/dtos/login-dto.dto';
-import { RefreshTokenDto } from '@auth-module/dtos/refresh-token-dto.dto';
-import { UserTokenDto } from '@auth-module/dtos/user-token.dto';
-import { AccessTokenDto } from '@auth-module/dtos/access-token-dto.dto';
+import { Body, Res, Render } from '@nestjs/common';
+import { Response } from 'express';
+import { ApiBody, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import { AuthService } from '@modules/auth/auth.service';
+import { LoginDto } from '@modules/auth/dtos/login-dto.dto';
+import { RefreshTokenDto } from '@modules/auth/dtos/refresh-token-dto.dto';
+import { UserTokenDto } from '@modules/auth/dtos/user-token.dto';
+import { AccessTokenDto } from '@modules/auth/dtos/access-token-dto.dto';
+import { Controller, Post, Get } from '@common/decorators/http.decorator';
 
 @Controller('auth')
-@ApiTags('auth')
-@UseFilters(GlobalExceptionFilter)
-@UsePipes(new ValidationPipe({ transform: true }))
 export class AuthController {
 	constructor(private authService: AuthService) {}
 
@@ -18,12 +16,11 @@ export class AuthController {
 	@ApiOkResponse({
 		type: UserTokenDto
 	})
-	@ApiBearerAuth()
 	@ApiOperation({ summary: 'Login system' })
 	@ApiBody({
 		type: LoginDto
 	})
-	login(@Body() loginDto: LoginDto): Promise<UserTokenDto> {
+	async login(@Body() loginDto: LoginDto) {
 		const { email, password } = loginDto;
 		return this.authService.login(email, password);
 	}
@@ -35,28 +32,20 @@ export class AuthController {
 	@ApiBody({
 		type: RefreshTokenDto
 	})
-	@ApiBearerAuth()
 	@ApiOperation({ summary: 'Refresh token' })
 	refreshToken(@Body() refreshTokenDto: RefreshTokenDto): Promise<AccessTokenDto> {
 		const { refreshToken } = refreshTokenDto;
 		return this.authService.refresh(refreshToken);
 	}
 
-	@Post('test')
-	// @ApiOkResponse({
-	// 	type: AccessTokenDto
-	// })
-	// @ApiBody({
-	// 	type: RefreshTokenDto
-	// })
-	@ApiBearerAuth()
-	@ApiOperation({ summary: 'Refresh token' })
-	test() {
-		return this.authService.register({
-			email: 'test@gmail.com',
-			firstName: 'test',
-			lastName: 'abc',
-			password: '123'
-		});
+	@Get('test')
+	async test(@Res() response: Response) {
+		return response.redirect('https://www.google.com/');
+	}
+
+	@Get('test2')
+	@Render('index')
+	test2() {
+		return { message: 'Hello world!' };
 	}
 }

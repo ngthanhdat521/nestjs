@@ -5,7 +5,7 @@ import { ProductCartEntity } from './product-cart.entity';
 
 @Injectable()
 export class ProductCartRepository extends Repository<ProductCartEntity> {
-  constructor(private dataSource: DataSource) {
-    super(ProductCartEntity, dataSource.createEntityManager());
-  }
+	constructor(private dataSource: DataSource) {
+		super(ProductCartEntity, dataSource.createEntityManager());
+	}
 }
